@@ -11,6 +11,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        haitaSky: "#C3EBFA",
+        haitaSkyLight: "#EDF9FD",
+        haitaPurple: "#CFCEFF",
+        haitaPurpleLight: "#F1F0FF",
+        haitaYellow: "#FAE27C",
+        haitaYellowLight: "#FEFCE8",
       },
     },
   },
