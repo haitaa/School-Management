@@ -34,7 +34,7 @@ interface TeacherFormProps {
   data?: any;
 }
 
-export const TeacherForm = ({ type, data }: TeacherFormProps) => {
+const TeacherForm = ({ type, data }: TeacherFormProps) => {
   const {
     register,
     handleSubmit,
@@ -163,3 +163,5 @@ export const TeacherForm = ({ type, data }: TeacherFormProps) => {
     </form>
   );
 };
+
+export default TeacherForm;

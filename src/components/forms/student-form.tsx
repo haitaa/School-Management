@@ -34,7 +34,7 @@ interface StudentFormProps {
   data?: any;
 }
 
-export const StudentForm = ({ type, data }: StudentFormProps) => {
+const StudentForm = ({ type, data }: StudentFormProps) => {
   const {
     register,
     handleSubmit,
@@ -163,3 +163,5 @@ export const StudentForm = ({ type, data }: StudentFormProps) => {
     </form>
   );
 };
+
+export default StudentForm;
