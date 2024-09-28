@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { TeacherForm } from "./forms/teacher-form";
+import { StudentForm } from "./forms/student-form";
 
 interface FormModalProps {
   table:
@@ -45,7 +46,7 @@ export const FormModal = ({ table, type, data, id }: FormModalProps) => {
         </button>
       </form>
     ) : (
-      <TeacherForm type="create" />
+      <StudentForm type="update" data={data} />
     );
   };
 
