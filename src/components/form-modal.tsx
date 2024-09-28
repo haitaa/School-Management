@@ -5,6 +5,13 @@ import { useState } from "react";
 import { TeacherForm } from "./forms/teacher-form";
 import { StudentForm } from "./forms/student-form";
 
+const forms: {
+  [key: string]: (type: "create" | "update", data: any) => JSX.Element;
+} = {
+  teacher: (type, data) => <TeacherForm type={type} data={data} />,
+  student: (type, data) => <StudentForm type={type} data={data} />,
+};
+
 interface FormModalProps {
   table:
     | "teacher"
@@ -45,8 +52,10 @@ export const FormModal = ({ table, type, data, id }: FormModalProps) => {
           Delete
         </button>
       </form>
+    ) : type === "create" || type === "update" ? (
+      forms[table](type, data)
     ) : (
-      <StudentForm type="update" data={data} />
+      "Form not found"
     );
   };
 
