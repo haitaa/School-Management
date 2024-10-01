@@ -102,42 +102,60 @@ const renderRow = (item: TeacherList) => {
 const TeacherList = async ({
   searchParams,
 }: {
+  // Fonksiyon, `searchParams` adlı bir nesne alır. Bu nesne sorgu için filtreleri içerir.
   searchParams: { [key: string]: string | undefined };
 }) => {
+  // `searchParams` içinden `page` değişkenini ayıklıyoruz ve geri kalan parametreleri `queryParams` altında topluyoruz.
   const { page, ...queryParams } = searchParams;
 
+  // Eğer `page` değeri varsa, bunu tamsayıya çeviriyoruz; yoksa varsayılan olarak 1. sayfayı kullanıyoruz.
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITION
-
+  // `Teacher` verilerini filtrelemek için bir sorgu nesnesi oluşturuyoruz.
   const query: Prisma.TeacherWhereInput = {};
 
+  // Eğer `queryParams` içinde herhangi bir değer varsa kontrol ediyoruz.
   if (queryParams) {
+    // `queryParams` içindeki her bir anahtar-değer çifti üzerinde döngü oluşturuyoruz.
     for (const [key, value] of Object.entries(queryParams)) {
       if (value !== undefined) {
+        // Anahtara göre `query` nesnesine özel filtreler ekliyoruz.
         switch (key) {
-          case "classId": {
+          // Eğer anahtar `classId` ise, öğretmenleri ilgili derslerin sınıfına göre filtreliyoruz.
+          case "classId":
             query.lessons = {
               some: {
+                // `classId` değerini tamsayıya çevirip sorguya ekliyoruz.
                 classId: parseInt(value),
               },
             };
-          }
+            break;
+
+          // Eğer anahtar `search` ise, öğretmenlerin adında geçen kelimeye göre arama yapıyoruz.
+          case "search":
+            query.name = { contains: value, mode: "insensitive" };
+            break; // Bu `case` bloğunda da break deyimi ekleyelim.
         }
       }
     }
   }
 
+  // Prisma ile öğretmenleri bulmak ve toplam öğretmen sayısını almak için iki ayrı sorgu işlemini aynı anda yürütüyoruz.
   const [data, count] = await prisma.$transaction([
     prisma.teacher.findMany({
+      // Yukarıda oluşturduğumuz filtre sorgusuna göre öğretmenleri getiriyoruz.
       where: query,
+      // Öğretmenlerle birlikte ilgili dersleri (`subjects`) ve sınıfları (`classes`) de getiriyoruz.
       include: {
         subjects: true,
         classes: true,
       },
+      // Sayfa başına belirlenen öğretmen sayısını alıyoruz (`ITEM_PER_PAGE`).
       take: ITEM_PER_PAGE,
+      // Kaçıncı sayfadan başlayacağımızı hesaplıyoruz.
       skip: ITEM_PER_PAGE * (p - 1),
     }),
+    // Aynı sorgu koşullarına göre öğretmen sayısını alıyoruz.
     prisma.teacher.count({
       where: query,
     }),
