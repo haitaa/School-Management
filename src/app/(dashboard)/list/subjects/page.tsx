@@ -42,13 +42,9 @@ const renderRow = (item: SubjectList) => {
       </td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/subjects/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-haitaSky">
-              <Image src={"/view.png"} alt="" width={16} height={16} />
-            </button>
-          </Link>
           {role === "admin" && (
             <>
+              <FormModal table="subject" type="update" data={item} />
               <FormModal table="subject" type="delete" id={item.id} />
             </>
           )}

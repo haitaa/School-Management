@@ -59,11 +59,6 @@ const renderRow = (item: ParentList) => {
       <td className="hidden md:table-cell">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/parents/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-haitaSky">
-              <Image src={"/view.png"} alt="" width={16} height={16} />
-            </button>
-          </Link>
           {role === "admin" && (
             <>
               {/* //{" "}
@@ -71,6 +66,7 @@ const renderRow = (item: ParentList) => {
                 // <Image src={"/delete.png"} alt="" width={16} height={16} />
                 //{" "}
               </button> */}
+              <FormModal table="parent" type="update" data={item} />
               <FormModal table="parent" type="delete" id={item.id} />
             </>
           )}
